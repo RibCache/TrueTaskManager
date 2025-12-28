@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, status
+from fastapi import APIRouter, Depends, status, HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
 from typing import List
 from src.schemas.data import CreateTask, TaskRead
@@ -24,3 +24,15 @@ async def get_all_tasks(
 ):
 
     return await crud.get_tasks(db=db)
+
+@router.get("/{task_id}", response_model=TaskRead)
+async def task_by_id(
+    task_id: int,
+    db: AsyncSession = Depends(get_async_session)
+):
+    task = await crud.get_task_by_id(db, task_id)
+    
+    if task is None:
+        raise HTTPException(status_code=404)
+
+    return task

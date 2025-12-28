@@ -19,5 +19,18 @@ async def get_tasks(db: AsyncSession) -> list[Task]:
     
     return result.scalars().all()
 
+async def get_task_by_id(db: AsyncSession, task_id: int):
+    query = select(Task).filter(Task.id == task_id)
+    
+    result = await db.execute(query)
+    
+    task = result.scalars().first()
+    
+    return task
+    
+    
+    
+    
+
     
     
