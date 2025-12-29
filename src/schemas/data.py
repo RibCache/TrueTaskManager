@@ -11,3 +11,8 @@ class TaskRead(CreateTask):
     created_at: datetime
     
     model_config = ConfigDict(from_attributes=True)
+    
+class UpdateTask(BaseModel):
+    title: str | None = None
+    description: str | None = None
+    is_completed: bool | None = None

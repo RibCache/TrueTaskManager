@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, status, HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
 from typing import List
-from src.schemas.data import CreateTask, TaskRead
+from src.schemas.data import CreateTask, TaskRead, UpdateTask
 from src.models.data import Task
 from src.services import crud
 from src.db.database import get_async_session
@@ -36,3 +36,24 @@ async def task_by_id(
         raise HTTPException(status_code=404)
 
     return task
+
+@router.patch("/{task_id}")
+async def update_existing_task(
+    task_id: int,
+    task_data: UpdateTask,
+    db: AsyncSession = Depends(get_async_session)
+):
+    updated_task = await crud.update_task(db=db, task_id=task_id, task_update=task_data)
+    if updated_task is None:
+        raise HTTPException(status_code=404)
+    return updated_task
+
+@router.delete("/{task_id}", status_code=204)
+async def delete_existing_task(
+    task_id: int,
+    db: AsyncSession = Depends(get_async_session)
+):
+    is_deleted = await crud.delete_task(db=db, task_id=task_id)
+    if not is_deleted:
+        raise HTTPException(status_code=404)
+    return None
