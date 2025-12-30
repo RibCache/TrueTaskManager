@@ -1,6 +1,6 @@
 from sqlalchemy.ext.asyncio import AsyncSession
-from src.models.data import Task
-from src.schemas.data import CreateTask, UpdateTask
+from models.task import Task
+from schemas.task import CreateTask, UpdateTask
 from sqlalchemy import select
 
 async def create_task(db: AsyncSession, task_in: CreateTask) -> Task:

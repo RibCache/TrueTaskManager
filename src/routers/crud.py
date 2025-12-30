@@ -1,8 +1,8 @@
 from fastapi import APIRouter, Depends, status, HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
 from typing import List
-from src.schemas.data import CreateTask, TaskRead, UpdateTask
-from src.models.data import Task
+from schemas.task import CreateTask, TaskRead, UpdateTask
+from models.task import Task
 from src.services import crud
 from src.db.database import get_async_session
 
